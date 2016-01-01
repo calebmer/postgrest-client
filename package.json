@@ -19,7 +19,7 @@
     "test": "$(npm bin)/mocha -r babel-polyfill -r babel-register test/*.test.js",
     "build": "$(npm bin)/babel lib -d dist",
     "lint": "$(npm bin)/standard lib/**/*.js",
-    "preversion": "git checkout master && npm run lint && npm test && npm run build",
+    "preversion": "git checkout master && npm run lint && npm test && npm run build && git add dist",
     "postversion": "git push origin master --tags && npm publish"
   },
   "dependencies": {
