@@ -113,7 +113,7 @@ api.get('/sessions').select(`
 Designates what order the response objects will be in.
 
 ```js
-api.get('/sessions').order(start_time, true)
+api.get('/sessions').order('start_time', true)
 ```
 
 #### ApiRequest#range(from, to?)
