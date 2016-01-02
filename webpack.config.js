@@ -14,7 +14,7 @@ const banner = [
 ].join('\n')
 
 module.exports = {
-  entry: './webpack.entry.js',
+  entry: './index.js',
   output: {
     path: './dist',
     filename: minify ? 'postgrest-client.min.js' : 'postgrest-client.js',
@@ -31,13 +31,5 @@ module.exports = {
       mangle: true,
       comments: /PostgREST Client/
     }) : null
-  ]),
-  module: {
-    loaders: [
-      {
-        test: /lib/,
-        loader: 'babel'
-      }
-    ]
-  }
+  ])
 }
