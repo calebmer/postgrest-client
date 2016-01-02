@@ -382,8 +382,6 @@ var PostgREST =
 /* 3 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
-
 	/**
 	 * Module dependencies.
 	 */
@@ -396,22 +394,19 @@ var PostgREST =
 	 */
 
 	var root;
-	if (typeof window !== 'undefined') {
-	  // Browser window
+	if (typeof window !== 'undefined') { // Browser window
 	  root = window;
-	} else if (typeof self !== 'undefined') {
-	  // Web Worker
+	} else if (typeof self !== 'undefined') { // Web Worker
 	  root = self;
-	} else {
-	  // Other environments
-	  root = undefined;
+	} else { // Other environments
+	  root = this;
 	}
 
 	/**
 	 * Noop.
 	 */
 
-	function noop() {};
+	function noop(){};
 
 	/**
 	 * Check if `obj` is a host object,
@@ -425,7 +420,7 @@ var PostgREST =
 	 */
 
 	function isHost(obj) {
-	  var str = ({}).toString.call(obj);
+	  var str = {}.toString.call(obj);
 
 	  switch (str) {
 	    case '[object File]':
@@ -442,21 +437,15 @@ var PostgREST =
 	 */
 
 	request.getXHR = function () {
-	  if (root.XMLHttpRequest && (!root.location || 'file:' != root.location.protocol || !root.ActiveXObject)) {
-	    return new XMLHttpRequest();
+	  if (root.XMLHttpRequest
+	      && (!root.location || 'file:' != root.location.protocol
+	          || !root.ActiveXObject)) {
+	    return new XMLHttpRequest;
 	  } else {
-	    try {
-	      return new ActiveXObject('Microsoft.XMLHTTP');
-	    } catch (e) {}
-	    try {
-	      return new ActiveXObject('Msxml2.XMLHTTP.6.0');
-	    } catch (e) {}
-	    try {
-	      return new ActiveXObject('Msxml2.XMLHTTP.3.0');
-	    } catch (e) {}
-	    try {
-	      return new ActiveXObject('Msxml2.XMLHTTP');
-	    } catch (e) {}
+	    try { return new ActiveXObject('Microsoft.XMLHTTP'); } catch(e) {}
+	    try { return new ActiveXObject('Msxml2.XMLHTTP.6.0'); } catch(e) {}
+	    try { return new ActiveXObject('Msxml2.XMLHTTP.3.0'); } catch(e) {}
+	    try { return new ActiveXObject('Msxml2.XMLHTTP'); } catch(e) {}
 	  }
 	  return false;
 	};
@@ -469,11 +458,9 @@ var PostgREST =
 	 * @api private
 	 */
 
-	var trim = ''.trim ? function (s) {
-	  return s.trim();
-	} : function (s) {
-	  return s.replace(/(^\s*|\s*$)/g, '');
-	};
+	var trim = ''.trim
+	  ? function(s) { return s.trim(); }
+	  : function(s) { return s.replace(/(^\s*|\s*$)/g, ''); };
 
 	/**
 	 * Check if `obj` is an object.
@@ -501,8 +488,8 @@ var PostgREST =
 	  for (var key in obj) {
 	    if (null != obj[key]) {
 	      pushEncodedKeyValuePair(pairs, key, obj[key]);
-	    }
-	  }
+	        }
+	      }
 	  return pairs.join('&');
 	}
 
@@ -517,26 +504,27 @@ var PostgREST =
 
 	function pushEncodedKeyValuePair(pairs, key, val) {
 	  if (Array.isArray(val)) {
-	    return val.forEach(function (v) {
+	    return val.forEach(function(v) {
 	      pushEncodedKeyValuePair(pairs, key, v);
 	    });
 	  }
-	  pairs.push(encodeURIComponent(key) + '=' + encodeURIComponent(val));
+	  pairs.push(encodeURIComponent(key)
+	    + '=' + encodeURIComponent(val));
 	}
 
 	/**
 	 * Expose serialization method.
 	 */
 
-	request.serializeObject = serialize;
+	 request.serializeObject = serialize;
 
-	/**
-	 * Parse the given x-www-form-urlencoded `str`.
-	 *
-	 * @param {String} str
-	 * @return {Object}
-	 * @api private
-	 */
+	 /**
+	  * Parse the given x-www-form-urlencoded `str`.
+	  *
+	  * @param {String} str
+	  * @return {Object}
+	  * @api private
+	  */
 
 	function parseString(str) {
 	  var obj = {};
@@ -584,19 +572,19 @@ var PostgREST =
 	 *
 	 */
 
-	request.serialize = {
-	  'application/x-www-form-urlencoded': serialize,
-	  'application/json': JSON.stringify
-	};
+	 request.serialize = {
+	   'application/x-www-form-urlencoded': serialize,
+	   'application/json': JSON.stringify
+	 };
 
-	/**
-	 * Default parsers.
-	 *
-	 *     superagent.parse['application/xml'] = function(str){
-	 *       return { object parsed from str };
-	 *     };
-	 *
-	 */
+	 /**
+	  * Default parsers.
+	  *
+	  *     superagent.parse['application/xml'] = function(str){
+	  *       return { object parsed from str };
+	  *     };
+	  *
+	  */
 
 	request.parse = {
 	  'application/x-www-form-urlencoded': parseString,
@@ -642,8 +630,7 @@ var PostgREST =
 	 */
 
 	function isJSON(mime) {
-	  return (/[\/+]json\b/.test(mime)
-	  );
+	  return /[\/+]json\b/.test(mime);
 	}
 
 	/**
@@ -654,7 +641,7 @@ var PostgREST =
 	 * @api private
 	 */
 
-	function type(str) {
+	function type(str){
 	  return str.split(/ *; */).shift();
 	};
 
@@ -666,11 +653,11 @@ var PostgREST =
 	 * @api private
 	 */
 
-	function params(str) {
-	  return reduce(str.split(/ *; */), function (obj, str) {
-	    var parts = str.split(/ *= */),
-	        key = parts.shift(),
-	        val = parts.shift();
+	function params(str){
+	  return reduce(str.split(/ *; */), function(obj, str){
+	    var parts = str.split(/ *= */)
+	      , key = parts.shift()
+	      , val = parts.shift();
 
 	    if (key && val) obj[key] = val;
 	    return obj;
@@ -728,7 +715,9 @@ var PostgREST =
 	  this.req = req;
 	  this.xhr = this.req.xhr;
 	  // responseText is accessible only if responseType is '' or 'text' and on older browsers
-	  this.text = this.req.method != 'HEAD' && (this.xhr.responseType === '' || this.xhr.responseType === 'text') || typeof this.xhr.responseType === 'undefined' ? this.xhr.responseText : null;
+	  this.text = ((this.req.method !='HEAD' && (this.xhr.responseType === '' || this.xhr.responseType === 'text')) || typeof this.xhr.responseType === 'undefined')
+	     ? this.xhr.responseText
+	     : null;
 	  this.statusText = this.req.xhr.statusText;
 	  this.setStatusProperties(this.xhr.status);
 	  this.header = this.headers = parseHeader(this.xhr.getAllResponseHeaders());
@@ -737,7 +726,9 @@ var PostgREST =
 	  // other headers fails.
 	  this.header['content-type'] = this.xhr.getResponseHeader('content-type');
 	  this.setHeaderProperties(this.header);
-	  this.body = this.req.method != 'HEAD' ? this.parseBody(this.text ? this.text : this.xhr.response) : null;
+	  this.body = this.req.method != 'HEAD'
+	    ? this.parseBody(this.text ? this.text : this.xhr.response)
+	    : null;
 	}
 
 	/**
@@ -748,7 +739,7 @@ var PostgREST =
 	 * @api public
 	 */
 
-	Response.prototype.get = function (field) {
+	Response.prototype.get = function(field){
 	  return this.header[field.toLowerCase()];
 	};
 
@@ -764,16 +755,14 @@ var PostgREST =
 	 * @api private
 	 */
 
-	Response.prototype.setHeaderProperties = function (header) {
+	Response.prototype.setHeaderProperties = function(header){
 	  // content-type
 	  var ct = this.header['content-type'] || '';
 	  this.type = type(ct);
 
 	  // params
 	  var obj = params(ct);
-	  for (var key in obj) {
-	    this[key] = obj[key];
-	  }
+	  for (var key in obj) this[key] = obj[key];
 	};
 
 	/**
@@ -787,9 +776,11 @@ var PostgREST =
 	 * @api private
 	 */
 
-	Response.prototype.parseBody = function (str) {
+	Response.prototype.parseBody = function(str){
 	  var parse = request.parse[this.type];
-	  return parse && str && (str.length || str instanceof Object) ? parse(str) : null;
+	  return parse && str && (str.length || str instanceof Object)
+	    ? parse(str)
+	    : null;
 	};
 
 	/**
@@ -813,7 +804,7 @@ var PostgREST =
 	 * @api private
 	 */
 
-	Response.prototype.setStatusProperties = function (status) {
+	Response.prototype.setStatusProperties = function(status){
 	  // handle IE9 bug: http://stackoverflow.com/questions/10046972/msie-returns-status-code-of-1223-for-ajax-request
 	  if (status === 1223) {
 	    status = 204;
@@ -830,7 +821,9 @@ var PostgREST =
 	  this.ok = 2 == type;
 	  this.clientError = 4 == type;
 	  this.serverError = 5 == type;
-	  this.error = 4 == type || 5 == type ? this.toError() : false;
+	  this.error = (4 == type || 5 == type)
+	    ? this.toError()
+	    : false;
 
 	  // sugar
 	  this.accepted = 202 == status;
@@ -849,7 +842,7 @@ var PostgREST =
 	 * @api public
 	 */
 
-	Response.prototype.toError = function () {
+	Response.prototype.toError = function(){
 	  var req = this.req;
 	  var method = req.method;
 	  var url = req.url;
@@ -885,13 +878,13 @@ var PostgREST =
 	  this.url = url;
 	  this.header = {};
 	  this._header = {};
-	  this.on('end', function () {
+	  this.on('end', function(){
 	    var err = null;
 	    var res = null;
 
 	    try {
 	      res = new Response(self);
-	    } catch (e) {
+	    } catch(e) {
 	      err = new Error('Parser is unable to parse the response');
 	      err.parse = true;
 	      err.original = e;
@@ -929,10 +922,10 @@ var PostgREST =
 	 * Allow for extension
 	 */
 
-	Request.prototype.use = function (fn) {
+	Request.prototype.use = function(fn) {
 	  fn(this);
 	  return this;
-	};
+	}
 
 	/**
 	 * Set timeout to `ms`.
@@ -942,7 +935,7 @@ var PostgREST =
 	 * @api public
 	 */
 
-	Request.prototype.timeout = function (ms) {
+	Request.prototype.timeout = function(ms){
 	  this._timeout = ms;
 	  return this;
 	};
@@ -954,7 +947,7 @@ var PostgREST =
 	 * @api public
 	 */
 
-	Request.prototype.clearTimeout = function () {
+	Request.prototype.clearTimeout = function(){
 	  this._timeout = 0;
 	  clearTimeout(this._timer);
 	  return this;
@@ -967,7 +960,7 @@ var PostgREST =
 	 * @api public
 	 */
 
-	Request.prototype.abort = function () {
+	Request.prototype.abort = function(){
 	  if (this.aborted) return;
 	  this.aborted = true;
 	  this.xhr.abort();
@@ -996,7 +989,7 @@ var PostgREST =
 	 * @api public
 	 */
 
-	Request.prototype.set = function (field, val) {
+	Request.prototype.set = function(field, val){
 	  if (isObject(field)) {
 	    for (var key in field) {
 	      this.set(key, field[key]);
@@ -1022,7 +1015,7 @@ var PostgREST =
 	 * @api public
 	 */
 
-	Request.prototype.unset = function (field) {
+	Request.prototype.unset = function(field){
 	  delete this._header[field.toLowerCase()];
 	  delete this.header[field];
 	  return this;
@@ -1036,7 +1029,7 @@ var PostgREST =
 	 * @api private
 	 */
 
-	Request.prototype.getHeader = function (field) {
+	Request.prototype.getHeader = function(field){
 	  return this._header[field.toLowerCase()];
 	};
 
@@ -1062,7 +1055,7 @@ var PostgREST =
 	 * @api public
 	 */
 
-	Request.prototype.type = function (type) {
+	Request.prototype.type = function(type){
 	  this.set('Content-Type', request.types[type] || type);
 	  return this;
 	};
@@ -1076,7 +1069,7 @@ var PostgREST =
 	 * @api public
 	 */
 
-	Request.prototype.parse = function (fn) {
+	Request.prototype.parse = function(fn){
 	  this._parser = fn;
 	  return this;
 	};
@@ -1101,7 +1094,7 @@ var PostgREST =
 	 * @api public
 	 */
 
-	Request.prototype.accept = function (type) {
+	Request.prototype.accept = function(type){
 	  this.set('Accept', request.types[type] || type);
 	  return this;
 	};
@@ -1115,7 +1108,7 @@ var PostgREST =
 	 * @api public
 	 */
 
-	Request.prototype.auth = function (user, pass) {
+	Request.prototype.auth = function(user, pass){
 	  var str = btoa(user + ':' + pass);
 	  this.set('Authorization', 'Basic ' + str);
 	  return this;
@@ -1135,7 +1128,7 @@ var PostgREST =
 	* @api public
 	*/
 
-	Request.prototype.query = function (val) {
+	Request.prototype.query = function(val){
 	  if ('string' != typeof val) val = serialize(val);
 	  if (val) this._query.push(val);
 	  return this;
@@ -1157,7 +1150,7 @@ var PostgREST =
 	 * @api public
 	 */
 
-	Request.prototype.field = function (name, val) {
+	Request.prototype.field = function(name, val){
 	  if (!this._formData) this._formData = new root.FormData();
 	  this._formData.append(name, val);
 	  return this;
@@ -1180,7 +1173,7 @@ var PostgREST =
 	 * @api public
 	 */
 
-	Request.prototype.attach = function (field, file, filename) {
+	Request.prototype.attach = function(field, file, filename){
 	  if (!this._formData) this._formData = new root.FormData();
 	  this._formData.append(field, file, filename);
 	  return this;
@@ -1237,7 +1230,7 @@ var PostgREST =
 	 * @api public
 	 */
 
-	Request.prototype.send = function (data) {
+	Request.prototype.send = function(data){
 	  var obj = isObject(data);
 	  var type = this.getHeader('Content-Type');
 
@@ -1250,7 +1243,9 @@ var PostgREST =
 	    if (!type) this.type('form');
 	    type = this.getHeader('Content-Type');
 	    if ('application/x-www-form-urlencoded' == type) {
-	      this._data = this._data ? this._data + '&' + data : data;
+	      this._data = this._data
+	        ? this._data + '&' + data
+	        : data;
 	    } else {
 	      this._data = (this._data || '') + data;
 	    }
@@ -1272,7 +1267,7 @@ var PostgREST =
 	 * @api private
 	 */
 
-	Request.prototype.callback = function (err, res) {
+	Request.prototype.callback = function(err, res){
 	  var fn = this._callback;
 	  this.clearTimeout();
 	  fn(err, res);
@@ -1284,7 +1279,7 @@ var PostgREST =
 	 * @api private
 	 */
 
-	Request.prototype.crossDomainError = function () {
+	Request.prototype.crossDomainError = function(){
 	  var err = new Error('Request has been terminated\nPossible causes: the network is offline, Origin is not allowed by Access-Control-Allow-Origin, the page is being unloaded, etc.');
 	  err.crossDomain = true;
 
@@ -1301,7 +1296,7 @@ var PostgREST =
 	 * @api private
 	 */
 
-	Request.prototype.timeoutError = function () {
+	Request.prototype.timeoutError = function(){
 	  var timeout = this._timeout;
 	  var err = new Error('timeout of ' + timeout + 'ms exceeded');
 	  err.timeout = timeout;
@@ -1319,7 +1314,7 @@ var PostgREST =
 	 * @api public
 	 */
 
-	Request.prototype.withCredentials = function () {
+	Request.prototype.withCredentials = function(){
 	  this._withCredentials = true;
 	  return this;
 	};
@@ -1333,7 +1328,7 @@ var PostgREST =
 	 * @api public
 	 */
 
-	Request.prototype.end = function (fn) {
+	Request.prototype.end = function(fn){
 	  var self = this;
 	  var xhr = this.xhr = request.getXHR();
 	  var query = this._query.join('&');
@@ -1344,17 +1339,13 @@ var PostgREST =
 	  this._callback = fn || noop;
 
 	  // state change
-	  xhr.onreadystatechange = function () {
+	  xhr.onreadystatechange = function(){
 	    if (4 != xhr.readyState) return;
 
 	    // In IE9, reads to any property (e.g. status) off of an aborted XHR will
 	    // result in the error "Could not complete the operation due to error c00c023f"
 	    var status;
-	    try {
-	      status = xhr.status;
-	    } catch (e) {
-	      status = 0;
-	    }
+	    try { status = xhr.status } catch(e) { status = 0; }
 
 	    if (0 == status) {
 	      if (self.timedout) return self.timeoutError();
@@ -1365,7 +1356,7 @@ var PostgREST =
 	  };
 
 	  // progress
-	  var handleProgress = function handleProgress(e) {
+	  var handleProgress = function(e){
 	    if (e.total > 0) {
 	      e.percent = e.loaded / e.total * 100;
 	    }
@@ -1378,14 +1369,15 @@ var PostgREST =
 	    if (xhr.upload && this.hasListeners('progress')) {
 	      xhr.upload.onprogress = handleProgress;
 	    }
-	  } catch (e) {}
-	  // Accessing xhr.upload fails in IE from a web worker, so just pretend it doesn't exist.
-	  // Reported here:
-	  // https://connect.microsoft.com/IE/feedback/details/837245/xmlhttprequest-upload-throws-invalid-argument-when-used-from-web-worker-context
+	  } catch(e) {
+	    // Accessing xhr.upload fails in IE from a web worker, so just pretend it doesn't exist.
+	    // Reported here:
+	    // https://connect.microsoft.com/IE/feedback/details/837245/xmlhttprequest-upload-throws-invalid-argument-when-used-from-web-worker-context
+	  }
 
 	  // timeout
 	  if (timeout && !this._timer) {
-	    this._timer = setTimeout(function () {
+	    this._timer = setTimeout(function(){
 	      self.timedout = true;
 	      self.abort();
 	    }, timeout);
@@ -1394,7 +1386,9 @@ var PostgREST =
 	  // querystring
 	  if (query) {
 	    query = request.serializeObject(query);
-	    this.url += ~this.url.indexOf('?') ? '&' + query : '?' + query;
+	    this.url += ~this.url.indexOf('?')
+	      ? '&' + query
+	      : '?' + query;
 	  }
 
 	  // initiate request
@@ -1436,10 +1430,10 @@ var PostgREST =
 	 */
 
 	Request.prototype.then = function (fulfill, reject) {
-	  return this.end(function (err, res) {
+	  return this.end(function(err, res) {
 	    err ? reject(err) : fulfill(res);
 	  });
-	};
+	}
 
 	/**
 	 * Expose `Request`.
@@ -1486,7 +1480,7 @@ var PostgREST =
 	 * @api public
 	 */
 
-	request.get = function (url, data, fn) {
+	request.get = function(url, data, fn){
 	  var req = request('GET', url);
 	  if ('function' == typeof data) fn = data, data = null;
 	  if (data) req.query(data);
@@ -1504,7 +1498,7 @@ var PostgREST =
 	 * @api public
 	 */
 
-	request.head = function (url, data, fn) {
+	request.head = function(url, data, fn){
 	  var req = request('HEAD', url);
 	  if ('function' == typeof data) fn = data, data = null;
 	  if (data) req.send(data);
@@ -1521,7 +1515,7 @@ var PostgREST =
 	 * @api public
 	 */
 
-	function del(url, fn) {
+	function del(url, fn){
 	  var req = request('DELETE', url);
 	  if (fn) req.end(fn);
 	  return req;
@@ -1540,7 +1534,7 @@ var PostgREST =
 	 * @api public
 	 */
 
-	request.patch = function (url, data, fn) {
+	request.patch = function(url, data, fn){
 	  var req = request('PATCH', url);
 	  if ('function' == typeof data) fn = data, data = null;
 	  if (data) req.send(data);
@@ -1558,7 +1552,7 @@ var PostgREST =
 	 * @api public
 	 */
 
-	request.post = function (url, data, fn) {
+	request.post = function(url, data, fn){
 	  var req = request('POST', url);
 	  if ('function' == typeof data) fn = data, data = null;
 	  if (data) req.send(data);
@@ -1576,7 +1570,7 @@ var PostgREST =
 	 * @api public
 	 */
 
-	request.put = function (url, data, fn) {
+	request.put = function(url, data, fn){
 	  var req = request('PUT', url);
 	  if ('function' == typeof data) fn = data, data = null;
 	  if (data) req.send(data);
@@ -1589,6 +1583,7 @@ var PostgREST =
 	 */
 
 	module.exports = request;
+
 
 /***/ },
 /* 4 */

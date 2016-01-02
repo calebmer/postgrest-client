@@ -1,6 +1,6 @@
 {
   "name": "postgrest-client",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Advanced client for the PostgREST API",
   "author": "Caleb Meredith <calebmeredith8@gmail.com>",
   "license": "MIT",
