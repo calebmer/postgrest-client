@@ -25,6 +25,13 @@ describe('ApiRequest', () => {
     assert.deepEqual(qs, { key1: 'eq.value1', key2: 'eq.value2' })
   })
 
+  it('won‘t assign to the passed match() filter', () => {
+    const match = { key1: 'value1', key2: 'value2' }
+    const { qs } = new ApiRequest('GET', '/').match(match)
+    assert.deepEqual(qs, { key1: 'eq.value1', key2: 'eq.value2' })
+    assert.deepEqual(match, { key1: 'value1', key2: 'value2' })
+  })
+
   it('will return a promise from end()', () => {
     const request = new ApiRequest('GET', '/')
     assert(request.end() instanceof Promise)
