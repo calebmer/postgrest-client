@@ -222,10 +222,11 @@ var PostgREST =
 	  }, {
 	    key: 'match',
 	    value: function match(query) {
+	      var newQuery = {};
 	      Object.keys(query).forEach(function (key) {
-	        return query[key] = 'eq.' + query[key];
+	        return newQuery[key] = 'eq.' + query[key];
 	      });
-	      return this.query(query);
+	      return this.query(newQuery);
 	    }
 
 	    /**
