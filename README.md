@@ -1,5 +1,7 @@
 # PostgREST Client
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/calebmer/postgrest-client.svg)](https://greenkeeper.io/)
+
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/)
 
 Isomorphic and integratabtle with any JavaScript framework, the PostgREST JavaScript client provides powerful bindings and features to be used exclusively with [PostgREST](https://github.com/begriffs/postgrest) APIs.
