@@ -37,6 +37,13 @@ describe('ApiRequest', () => {
     assert(request.end() instanceof Promise)
   })
 
+  it('will return same promise from second call of end()', () => {
+    const request = new ApiRequest('GET', '/')
+		const firstEndPromise = request.end()
+		const secondEndPromise = request.end()
+    assert(firstEndPromise === secondEndPromise)
+  })
+
   it('can be resolved', done => {
     const request = new ApiRequest('GET', '/')
     Promise.resolve(request).catch(() => done())
