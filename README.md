@@ -102,10 +102,10 @@ Takes a select string, strips all whitespace, and sets it to the query string. H
 api.get('/sessions').select(`
   start_time,
   end_time,
-  speaker {
+  speaker (
     name,
     twitter
-  }
+  )
 `)
 ```
 
